@@ -36,46 +36,38 @@ type HealthChecksConfig struct {
 	Checks   []string      `koanf:"checks"`
 }
 
-func DefaultObservabilityConfig() *ObservabilityConfig {
+
+func DefaultObservabilityConfig() *ObservabilityConfig{
 	return &ObservabilityConfig{
 		ServiceName: "boilerplate",
 		Environment: "development",
 		Logging: LoggingConfig{
-			Level:              "info",
-			Format:             "json",
+			Level: "info",
+			Format: "json",
 			SlowQueryThreshold: 100 * time.Millisecond,
 		},
 		NewRelic: NewRelicConfig{
-			LicenseKey:                "",
-			AppLogForwardingEnabled:   true,
-			DistributedTracingEnabled: true,
-			DebugLogging:              false, // Disabled by default to avoid mixed log formats
+			LicenseKey: "",
+			AppLogForwardingEnabled: false,
+			DistributedTracingEnabled: false,
+			DebugLogging: true,
 		},
 		HealthChecks: HealthChecksConfig{
-			Enabled:  true,
-			Interval: 30 * time.Second,
-			Timeout:  5 * time.Second,
-			Checks:   []string{"database", "redis"},
+			Enabled: true,
+			Interval: 100 * time.Millisecond,
+			Timeout: 100 * time.Millisecond,
+			Checks: []string{"db", "redis"},
 		},
 	}
 }
 
 func (c *ObservabilityConfig) Validate() error {
 	if c.ServiceName == "" {
-		return fmt.Errorf("service_name is required")
+		return fmt.Errorf("service name is required")
 	}
 
-	// Validate log level
-	validLevels := map[string]bool{
-		"debug": true, "info": true, "warn": true, "error": true,
-	}
-	if !validLevels[c.Logging.Level] {
-		return fmt.Errorf("invalid logging level: %s (must be one of: debug, info, warn, error)", c.Logging.Level)
-	}
-
-	// Validate slow query threshold
 	if c.Logging.SlowQueryThreshold < 0 {
-		return fmt.Errorf("logging slow_query_threshold must be non-negative")
+		return fmt.Errorf("SlowQueryThreshold should non-negative")
 	}
 
 	return nil
@@ -84,17 +76,22 @@ func (c *ObservabilityConfig) Validate() error {
 func (c *ObservabilityConfig) GetLogLevel() string {
 	switch c.Environment {
 	case "production":
-		if c.Logging.Level == "" {
+		if c.Logging.Level == ""{
 			return "info"
 		}
 	case "development":
-		if c.Logging.Level == "" {
-			return "debug"
+		if c.Logging.Level == ""{
+			return "info"
 		}
 	}
+
 	return c.Logging.Level
 }
 
+
 func (c *ObservabilityConfig) IsProduction() bool {
-	return c.Environment == "production"
+	if c.Environment == "production"{
+		return true
+	}
+	return false
 }

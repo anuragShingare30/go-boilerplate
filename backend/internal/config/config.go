@@ -12,14 +12,17 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// @build Main aim is to load all env variables in struct when server starts
+// @dev Main aim is to load all env variables in struct when server starts
 // @dev this loads all env variable into struct
+
+
 type Config struct {
 	Primary  Primary        `koanf:"primary" validation:"required"`
 	Server   ServerConfig   `koanf:"server" validation:"required"`
 	Redis    RedisConfig    `koanf:"redis" validation:"required"`
 	Database DatabaseConfig `koanf:"database" validation:"required"`
 	Auth     AuthConfig     `koanf:"auth" validation:"required"`
+	Observability *ObservabilityConfig `koanf:"observability" validation:"required"`
 }
 
 type Primary struct {
@@ -82,6 +85,21 @@ func LoadConfig() (mainConfig *Config, err error) {
 	err = validate.Struct(mainConfig)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("could not validate the struct")
+	}
+
+	// set default observability config if not provided
+	// in config struct we set Observability as pointer type to check whether it is nil or not
+	if mainConfig.Observability == nil {
+		mainConfig.Observability = DefaultObservabilityConfig()
+	}
+
+	// fill some of the fields
+	mainConfig.Observability.ServiceName = "go-boilerplate"
+	mainConfig.Observability.Environment = mainConfig.Primary.Env
+
+	err = mainConfig.Observability.Validate()
+	if err != nil {
+		logger.Fatal().Err(err).Msg("invalid observability config")
 	}
 
 	return
