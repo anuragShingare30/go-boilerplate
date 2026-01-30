@@ -12,7 +12,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// @dev Main aim is to load all env variables in struct when server starts
+// @dev to load all env variables in struct when server starts
 // @dev this loads all env variable into struct
 
 
@@ -97,6 +97,7 @@ func LoadConfig() (mainConfig *Config, err error) {
 	mainConfig.Observability.ServiceName = "go-boilerplate"
 	mainConfig.Observability.Environment = mainConfig.Primary.Env
 
+	// automatic pointer dereferencing for method calls
 	err = mainConfig.Observability.Validate()
 	if err != nil {
 		logger.Fatal().Err(err).Msg("invalid observability config")

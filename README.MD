@@ -40,6 +40,8 @@ backend
 
 **Project Layout** - https://github.com/golang-standards/project-layout
 
+**echo framework** - "https://echo.labstack.com/docs/quick-start"
+
 **pgx - SQL Driver** - https://github.com/jackc/pgx
 
 **tern - SQL Migrator** - https://github.com/jackc/tern

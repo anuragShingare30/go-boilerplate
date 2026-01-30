@@ -48,9 +48,9 @@ func DefaultObservabilityConfig() *ObservabilityConfig{
 		},
 		NewRelic: NewRelicConfig{
 			LicenseKey: "",
-			AppLogForwardingEnabled: false,
-			DistributedTracingEnabled: false,
-			DebugLogging: true,
+			AppLogForwardingEnabled: true,
+			DistributedTracingEnabled: true,
+			DebugLogging: false,  // Disabled by default to avoid mixed log formats
 		},
 		HealthChecks: HealthChecksConfig{
 			Enabled: true,
