@@ -48,6 +48,8 @@ backend
 
 **zerolog - JSON Logger** - https://github.com/rs/zerolog
 
+**newrelic -Monitoring and Observability** - "https://pkg.go.dev/github.com/newrelic/go-agent/v3@v3.40.1/newrelic"
+
 **validator** - https://github.com/go-playground/validator
 
 **koanf - Configuration Management** - https://github.com/knadh/koanf
