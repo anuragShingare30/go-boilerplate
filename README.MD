@@ -23,7 +23,7 @@ backend
     │   ├── database              # storing DB migrations and connection logic
     │   ├── errs                  # Storing custom errors and error handling logic
     │   ├── handler               # Storing Handler logic
-    │   ├── lib                   # Store any other modules or logic
+    │   ├── lib                   # Store utils and handle background jobs (like notifications,emails,etc)
     │   ├── logger                # Storing logger logic and code
     │   ├── middleware            # store global and error handling and request handling middlewares
     │   ├── model                 # storing Go structs which have one to one mapping with DB tables
@@ -57,3 +57,5 @@ backend
 **testify - for testing** - https://github.com/stretchr/testify
 
 **taskfile** - https://taskfile.dev/
+
+**AsyncQ - queueing tasks and processing them asynchronously with workers** - https://github.com/hibiken/asynq

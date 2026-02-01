@@ -149,9 +149,8 @@ func NewLoggerWithService(cfg *config.ObservabilityConfig, loggerService *Logger
 	return logger
 }
 
-
 // WithTraceContext: adds New Relic transaction context to logger
-// newrelic.Transaction: represents a single web request or background task being monitored by NewRelic. 
+// newrelic.Transaction: represents a single web request or background task being monitored by NewRelic.
 // It's typically created at the start of an HTTP handler using the NewRelic middleware.
 // Request duration, Response status codes, Database query times, External API calls, Errors and panics, Custom events/metrics
 // -> kind of trace which have a starting point and end point, all the interaction and components it touches during complete request lifecylce are included in single transaction. If something goes wrong, we can take a particular tnx and explore.
@@ -168,12 +167,12 @@ func WithTraceContext(logger zerolog.Logger, txn *newrelic.Transaction) zerolog.
 }
 
 // NewPgxLogger: creates a database logger(development). For production, newrelic with pgx
-func NewPgxLogger(level zerolog.Level) zerolog.Logger{
+func NewPgxLogger(level zerolog.Level) zerolog.Logger {
 	// Using console writer for development
 	// In production, we will use newrelic and pgx
 	writer := zerolog.ConsoleWriter{
-		Out: os.Stdout,
-		NoColor: true,
+		Out:        os.Stdout,
+		NoColor:    true,
 		TimeFormat: "2006-01-02 15:04:05",
 		FormatFieldValue: func(i any) string {
 			switch v := i.(type) {
@@ -187,7 +186,7 @@ func NewPgxLogger(level zerolog.Level) zerolog.Logger{
 				return v
 			// for arguments
 			case []byte:
-			var obj interface{}
+				var obj interface{}
 				if err := json.Unmarshal(v, &obj); err == nil {
 					pretty, _ := json.MarshalIndent(obj, "", "    ")
 					return "\n" + string(pretty)

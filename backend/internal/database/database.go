@@ -21,13 +21,12 @@ import (
 // @dev logic to connect the db
 // @dev Database Pooling: Opening certain number of connections in-hand, application will be more efficient in performance
 
-
 type Database struct {
-	Pool *pgxpool.Pool // to store pool
-	log *zerolog.Logger // to log db related info
+	Pool *pgxpool.Pool   // to store pool
+	log  *zerolog.Logger // to log db related info
 }
 
-type multiTracer struct{
+type multiTracer struct {
 	tracers []any
 }
 
@@ -57,8 +56,7 @@ func (mt *multiTracer) TraceQueryEnd(ctx context.Context, conn *pgx.Conn, data p
 	}
 }
 
-
-func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig.LoggerService) (*Database, error){
+func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig.LoggerService) (*Database, error) {
 	hostPort := net.JoinHostPort(cfg.Database.Host, strconv.Itoa(cfg.Database.Port))
 
 	// URL-encode the password
@@ -78,7 +76,6 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig
 		return nil, fmt.Errorf("failed to parse pgx pool config: %w", err)
 	}
 
-	
 	// Add New Relic PostgreSQL instrumentation
 	if loggerService != nil && loggerService.GetApplication() != nil {
 		pgxPoolConfig.ConnConfig.Tracer = nrpgx5.NewTracer()
@@ -107,17 +104,16 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig
 			}
 		}
 	}
-	
 
 	// Establishes actual database connections
 	pool, err := pgxpool.NewWithConfig(context.Background(), pgxPoolConfig)
-	if err != nil{
+	if err != nil {
 		return nil, fmt.Errorf("failed to establish database connection %w", err)
 	}
 
 	database := &Database{
 		Pool: pool,
-		log: logger,
+		log:  logger,
 	}
 
 	// Pings database with 10-second timeout
@@ -129,10 +125,8 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig
 
 	logger.Info().Msg("connected to database!!!")
 
-
 	return database, nil
 }
-
 
 // Close: gracefully closes the database connection pool
 func (db *Database) Close() error {

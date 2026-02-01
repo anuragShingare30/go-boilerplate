@@ -36,27 +36,26 @@ type HealthChecksConfig struct {
 	Checks   []string      `koanf:"checks"`
 }
 
-
-func DefaultObservabilityConfig() *ObservabilityConfig{
+func DefaultObservabilityConfig() *ObservabilityConfig {
 	return &ObservabilityConfig{
 		ServiceName: "boilerplate",
 		Environment: "development",
 		Logging: LoggingConfig{
-			Level: "info",
-			Format: "json",
+			Level:              "info",
+			Format:             "json",
 			SlowQueryThreshold: 100 * time.Millisecond,
 		},
 		NewRelic: NewRelicConfig{
-			LicenseKey: "",
-			AppLogForwardingEnabled: true,
+			LicenseKey:                "",
+			AppLogForwardingEnabled:   true,
 			DistributedTracingEnabled: true,
-			DebugLogging: false,  // Disabled by default to avoid mixed log formats
+			DebugLogging:              false, // Disabled by default to avoid mixed log formats
 		},
 		HealthChecks: HealthChecksConfig{
-			Enabled: true,
+			Enabled:  true,
 			Interval: 100 * time.Millisecond,
-			Timeout: 100 * time.Millisecond,
-			Checks: []string{"db", "redis"},
+			Timeout:  100 * time.Millisecond,
+			Checks:   []string{"db", "redis"},
 		},
 	}
 }
@@ -76,11 +75,11 @@ func (c *ObservabilityConfig) Validate() error {
 func (c *ObservabilityConfig) GetLogLevel() string {
 	switch c.Environment {
 	case "production":
-		if c.Logging.Level == ""{
+		if c.Logging.Level == "" {
 			return "info"
 		}
 	case "development":
-		if c.Logging.Level == ""{
+		if c.Logging.Level == "" {
 			return "info"
 		}
 	}
@@ -88,9 +87,8 @@ func (c *ObservabilityConfig) GetLogLevel() string {
 	return c.Logging.Level
 }
 
-
 func (c *ObservabilityConfig) IsProduction() bool {
-	if c.Environment == "production"{
+	if c.Environment == "production" {
 		return true
 	}
 	return false

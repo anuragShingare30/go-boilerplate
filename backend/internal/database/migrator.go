@@ -44,7 +44,7 @@ func Migrate(ctx context.Context, logger *zerolog.Logger, cfg *config.Config) er
 	if err != nil {
 		return fmt.Errorf("constructing database migrator: %w", err)
 	}
-	// real all files from migrations dir
+	// read all files from migrations dir
 	subtree, err := fs.Sub(migrations, "migrations")
 	if err != nil {
 		return fmt.Errorf("retrieving database migrations subtree: %w", err)

@@ -15,13 +15,12 @@ import (
 // @dev to load all env variables in struct when server starts
 // @dev this loads all env variable into struct
 
-
 type Config struct {
-	Primary  Primary        `koanf:"primary" validation:"required"`
-	Server   ServerConfig   `koanf:"server" validation:"required"`
-	Redis    RedisConfig    `koanf:"redis" validation:"required"`
-	Database DatabaseConfig `koanf:"database" validation:"required"`
-	Auth     AuthConfig     `koanf:"auth" validation:"required"`
+	Primary       Primary              `koanf:"primary" validation:"required"`
+	Server        ServerConfig         `koanf:"server" validation:"required"`
+	Redis         RedisConfig          `koanf:"redis" validation:"required"`
+	Database      DatabaseConfig       `koanf:"database" validation:"required"`
+	Auth          AuthConfig           `koanf:"auth" validation:"required"`
 	Observability *ObservabilityConfig `koanf:"observability" validation:"required"`
 }
 
