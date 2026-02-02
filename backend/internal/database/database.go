@@ -76,6 +76,8 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig
 		return nil, fmt.Errorf("failed to parse pgx pool config: %w", err)
 	}
 
+	// New Relic Intrumentation Integration
+
 	// Add New Relic PostgreSQL instrumentation
 	if loggerService != nil && loggerService.GetApplication() != nil {
 		pgxPoolConfig.ConnConfig.Tracer = nrpgx5.NewTracer()
@@ -104,6 +106,8 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerConfig
 			}
 		}
 	}
+
+	// New Relic Impl. Ends Here
 
 	// Establishes actual database connections
 	pool, err := pgxpool.NewWithConfig(context.Background(), pgxPoolConfig)

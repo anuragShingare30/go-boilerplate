@@ -15,7 +15,7 @@ import (
 )
 
 /**
-@dev NewRelic: Tracks response times, throughput, and error rates,
+@dev NewRelic Instrumentation: Tracks response times, throughput, and error rates,
 Identifies slow database queries and API calls, Shows which endpoints are consuming most resources
 
 @dev logger Service: Collects all application logs in one central place.

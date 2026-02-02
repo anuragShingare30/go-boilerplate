@@ -10,7 +10,6 @@ import (
 	"strconv"
 
 	"github.com/anuragShingare30/go-boilerplate/internal/config"
-
 	"github.com/jackc/pgx/v5"
 	tern "github.com/jackc/tern/v2/migrate"
 	"github.com/rs/zerolog"
@@ -39,7 +38,7 @@ func Migrate(ctx context.Context, logger *zerolog.Logger, cfg *config.Config) er
 	}
 	defer conn.Close(ctx)
 
-	// init tern migrator
+	// initialize tern migrator
 	m, err := tern.NewMigrator(ctx, conn, "schema_version")
 	if err != nil {
 		return fmt.Errorf("constructing database migrator: %w", err)

@@ -6,30 +6,29 @@ import (
 	"github.com/rs/zerolog"
 )
 
+// Client is exposed; server and logger is internal use only
 type JobService struct {
 	Client *asynq.Client
 	server *asynq.Server
 	logger *zerolog.Logger
 }
 
-func NewJobService(logger *zerolog.Logger, cfg *config.Config) *JobService {
+// this created new job service with concurrent workers to resolve the jobs
+func NewJobService(cfg *config.Config, logger *zerolog.Logger) (*JobService){
 	redisAddr := cfg.Redis.Address
 
 	client := asynq.NewClient(asynq.RedisClientOpt{
 		Addr: redisAddr,
 	})
 
-	server := asynq.NewServer(
-		asynq.RedisClientOpt{Addr: redisAddr},
-		asynq.Config{
-			Concurrency: 10, // number of concurrent workers
-			Queues: map[string]int{
-				"critical": 6, // Higher priority queue for important emails
-				"default":  3, // Default priority for most emails
-				"low":      1, // Lower priority for non-urgent emails
-			},
+	server := asynq.NewServer(asynq.RedisClientOpt{Addr: redisAddr}, asynq.Config{
+		Concurrency: 10, // represents number of concurrent workers
+		Queues: map[string]int{
+			"critical": 6,
+			"default": 3,
+			"low": 1,
 		},
-	)
+	})
 
 	return &JobService{
 		Client: client,
@@ -39,13 +38,13 @@ func NewJobService(logger *zerolog.Logger, cfg *config.Config) *JobService {
 }
 
 // start the job server
-func (j *JobService) Start() error {
+func (job *JobService) StartServer() error{
 	// Register task handlers
 	mux := asynq.NewServeMux()
-	mux.HandleFunc(TaskWelcome, j.handleWelcomeEmailTask)
+	mux.HandleFunc(TaskWelcome, job.handleWelcomeEmailTask)
 
-	j.logger.Info().Msg("Starting background job server")
-	if err := j.server.Start(mux); err != nil {
+	job.logger.Info().Msg("Starting background Job Server")
+	if err := job.server.Start(mux); err != nil{
 		return err
 	}
 
@@ -53,8 +52,8 @@ func (j *JobService) Start() error {
 }
 
 // stop the job server
-func (j *JobService) Stop() {
-	j.logger.Info().Msg("Stopping background job server")
-	j.server.Shutdown()
-	j.Client.Close()
+func (job *JobService) StopServer(){
+	job.logger.Info().Msg("Stopping the Job Server")
+	job.server.Shutdown()
+	job.Client.Close()
 }

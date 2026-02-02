@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// PrintJSON pretty prints the given value as JSON to the console.
 func PrintJSON(v interface{}) {
 	json, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
