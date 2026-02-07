@@ -21,6 +21,7 @@ type Config struct {
 	Redis         RedisConfig          `koanf:"redis" validation:"required"`
 	Database      DatabaseConfig       `koanf:"database" validation:"required"`
 	Auth          AuthConfig           `koanf:"auth" validation:"required"`
+	Integration   IntegrationConfig    `koanf:"integration" validation:"required"`
 	Observability *ObservabilityConfig `koanf:"observability" validation:"required"`
 }
 
@@ -55,6 +56,10 @@ type DatabaseConfig struct {
 
 type AuthConfig struct {
 	SecretKey string `koanf:"secret_key" validation:"required"`
+}
+
+type IntegrationConfig struct {
+	ResendAPIKey string `koanf:"resend_api_key" validation:"required"`
 }
 
 // LoadConfig loads the configuration from environment variables using koanf

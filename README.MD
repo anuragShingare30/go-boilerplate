@@ -59,3 +59,5 @@ backend
 **taskfile** - https://taskfile.dev/
 
 **AsyncQ - queueing tasks and processing them asynchronously with workers** - https://github.com/hibiken/asynq
+
+**Resend - Email provider** - https://resend.com/
