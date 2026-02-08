@@ -6,9 +6,9 @@ import (
 	"html/template"
 
 	"github.com/anuragShingare30/go-boilerplate/internal/config"
-	zerolog "github.com/jackc/pgx-zerolog"
 	"github.com/pkg/errors"
 	"github.com/resend/resend-go/v2"
+	"github.com/rs/zerolog"
 )
 
 type Client struct {

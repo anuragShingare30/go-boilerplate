@@ -8,7 +8,7 @@ import (
 	"github.com/anuragShingare30/go-boilerplate/internal/config"
 	"github.com/anuragShingare30/go-boilerplate/internal/lib/email"
 	"github.com/hibiken/asynq"
-	zerolog "github.com/jackc/pgx-zerolog"
+	"github.com/rs/zerolog"
 )
 
 // @dev This handles all the background jobs (for now, just email related)
