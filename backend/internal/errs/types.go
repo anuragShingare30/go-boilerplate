@@ -28,16 +28,16 @@ type Action struct {
 	Value   string     `json:"value"`
 }
 
-// this is final error struct we sent to client
+// final error struct we will used over application and send to client
 type HTTPError struct {
-	Code    string `json:"code"` // Ex: TODO_NOT_FOUND type of error code
-	Message string `json:"message"`
-	Status  int    `json:"status"` // HTTP status code
-	Overide bool   `json:"override"`
+	Code     string `json:"code"` // Ex: TODO_NOT_FOUND type of error code
+	Message  string `json:"message"`
+	Status   int    `json:"status"` // HTTP status code
+	Override bool   `json:"override"`
 	// field/form level errors
-	Errors []FieldError `json:"errors"`
+	Errors []FieldError `json:"errors"` // passed as optional
 	// action to be taken
-	Action *Action `json:"action"`
+	Action *Action `json:"action"` // passed as optional
 }
 
 func (e *HTTPError) Error() string {
@@ -52,12 +52,12 @@ func (e *HTTPError) Is(target error) bool {
 
 func (e *HTTPError) WithMessage(message string) *HTTPError {
 	return &HTTPError{
-		Code:    e.Code,
-		Message: message,
-		Status:  e.Status,
-		Overide: e.Overide,
-		Errors:  e.Errors,
-		Action:  e.Action,
+		Code:     e.Code,
+		Message:  message,
+		Status:   e.Status,
+		Override: e.Override,
+		Errors:   e.Errors,
+		Action:   e.Action,
 	}
 }
 

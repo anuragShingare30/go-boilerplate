@@ -61,3 +61,37 @@ backend
 **AsyncQ - queueing tasks and processing them asynchronously with workers** - https://github.com/hibiken/asynq
 
 **Resend - Email provider** - https://resend.com/
+
+
+
+
+## Start Command
+
+```bash
+# postgreSql
+docker run -d \
+  --name postgres-dev \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=boilerplate \
+  -p 5432:5432 \
+  postgres:16-alpine
+
+
+# Redis
+docker run -d \
+  --name redis-dev \
+  -p 6379:6379 \
+  redis:alpine
+
+
+# If container already exists
+docker start postgres-dev
+docker start redis-dev
+
+
+# to stop them
+docker stop postgres-dev redis-dev
+
+# to check if they are running
+docker ps | grep -E "postgres-dev|redis-dev"
+```

@@ -5,39 +5,45 @@ import (
 )
 
 // HTTP Status Code: 401 ("UNAUTHORIZED")
-func NewUnauthorizedError(message string, overide bool) *HTTPError {
+func NewUnauthorizedError(message string, override bool) *HTTPError {
 	return &HTTPError{
-		Code:    MakeUpperCaseWithUnderscores(http.StatusText(http.StatusUnauthorized)),
-		Message: message,
-		Status:  http.StatusUnauthorized,
-		Overide: overide,
+		Code:     MakeUpperCaseWithUnderscores(http.StatusText(http.StatusUnauthorized)),
+		Message:  message,
+		Status:   http.StatusUnauthorized,
+		Override: override,
 	}
 }
 
 // HTTP Status Code: 403 ("FORBIDDEN")
-func NewForbiddenError(message string, overide bool) *HTTPError {
+func NewForbiddenError(message string, override bool) *HTTPError {
 	return &HTTPError{
-		Code:    MakeUpperCaseWithUnderscores(http.StatusText(http.StatusForbidden)),
-		Message: message,
-		Status:  http.StatusForbidden,
-		Overide: overide,
+		Code:     MakeUpperCaseWithUnderscores(http.StatusText(http.StatusForbidden)),
+		Message:  message,
+		Status:   http.StatusForbidden,
+		Override: override,
 	}
 }
 
-// HTTP Status Code: 400 ("BAD REQUEST")
-func NewBadRequestError(message string, overide bool, action *Action, errors []FieldError) *HTTPError {
+// HTTP Status Code: 400
+func NewBadRequestError(message string, override bool, code *string, errors []FieldError, action *Action) *HTTPError {
+	formattedCode := MakeUpperCaseWithUnderscores(http.StatusText(http.StatusBadRequest))
+
+	if code != nil {
+		formattedCode = *code
+	}
+
 	return &HTTPError{
-		Code:    http.StatusText(http.StatusBadRequest),
-		Message: message,
-		Status:  http.StatusBadRequest,
-		Overide: overide,
-		Errors:  errors,
-		Action:  action,
+		Code:     formattedCode,
+		Message:  message,
+		Status:   http.StatusBadRequest,
+		Override: override,
+		Errors:   errors,
+		Action:   action,
 	}
 }
 
-// HTTP Status Code: 404 ("NOT FOUND")
-func NewNotFoundError(message string, overide bool, code *string) *HTTPError {
+// HTTP Status Code: 404
+func NewNotFoundError(message string, override bool, code *string) *HTTPError {
 	formattedCode := MakeUpperCaseWithUnderscores(http.StatusText(http.StatusNotFound))
 
 	if code != nil {
@@ -45,23 +51,23 @@ func NewNotFoundError(message string, overide bool, code *string) *HTTPError {
 	}
 
 	return &HTTPError{
-		Code:    formattedCode,
-		Message: message,
-		Status:  http.StatusNotFound,
-		Overide: overide,
+		Code:     formattedCode,
+		Message:  message,
+		Status:   http.StatusNotFound,
+		Override: override,
 	}
 }
 
-// HTTP Status Code: 500 ("INTERNAL SERVER ERROR")
+// HTTP Status Code: 500
 func NewInternalServerError() *HTTPError {
 	return &HTTPError{
-		Code:    MakeUpperCaseWithUnderscores(http.StatusText(http.StatusInternalServerError)),
-		Message: http.StatusText(http.StatusInternalServerError),
-		Status:  http.StatusInternalServerError,
-		Overide: false,
+		Code:     MakeUpperCaseWithUnderscores(http.StatusText(http.StatusInternalServerError)),
+		Message:  http.StatusText(http.StatusInternalServerError),
+		Status:   http.StatusInternalServerError,
+		Override: false,
 	}
 }
 
 func ValidationError(err error) *HTTPError {
-	return NewBadRequestError("Validation failed: "+err.Error(), false, nil, nil)
+	return NewBadRequestError("Validation failed: "+err.Error(), false, nil, nil, nil)
 }
